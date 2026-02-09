@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.env
+
+# Generated artifacts
+backend/epl_data.db
+backend/model.pkl
+backend/metrics.json
+
+# Node
+frontend/node_modules/
+frontend/build/
+
+# OS
+.DS_Store
+
+# Project documentation
+CLAUDE.md
