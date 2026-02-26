@@ -1,4 +1,4 @@
-#Feature engineering for EPL Match Predictor.
+#Feature engineering for EPL Match Predictor
 
 #Calculates 6 form-based features from match history:
 # 1. home_form_points       — Points from home team's last 5 matches
