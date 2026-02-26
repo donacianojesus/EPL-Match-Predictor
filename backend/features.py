@@ -1,6 +1,6 @@
-Feature engineering for EPL Match Predictor.
+#Feature engineering for EPL Match Predictor.
 
-Calculates 6 form-based features from match history:
+#Calculates 6 form-based features from match history:
 # 1. home_form_points       — Points from home team's last 5 matches
 # 2. away_form_points       — Points from away team's last 5 matches
 # 3. home_form_goals_scored — Avg goals scored by home team in last 5
@@ -125,7 +125,6 @@ def calculate_features(conn, home_team, away_team, date, season):
     }
 
 
-# --- Verification ---
 if __name__ == "__main__":
     conn = sqlite3.connect(DB_PATH)
 
