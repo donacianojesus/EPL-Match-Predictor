@@ -60,11 +60,34 @@ def main():
     X_test, y_test = test_df[FEATURE_NAMES], test_df["result"]
     print(f"Train: {len(X_train)}  |  Test: {len(X_test)}")
 
-    # TODO: Train RandomForestClassifier on X_train/y_train (n_estimators=100, random_state=42)
+    # Train model
+    model = RandomForestClassifier(n_estimators=100, random_state=42)
+    model.fit(X_train, y_train)
 
-    # TODO: Evaluate on X_test/y_test — accuracy, confusion matrix, classification report
+    # Evaluate
+    y_pred = model.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred)
+    cm = confusion_matrix(y_test, y_pred, labels=["A", "D", "H"])
+    report = classification_report(y_test, y_pred, labels=["A", "D", "H"], output_dict=True)
+    print(f"Accuracy: {accuracy:.4f}")
+    print(classification_report(y_test, y_pred, labels=["A", "D", "H"]))
 
-    # TODO: Save model to MODEL_PATH with joblib.dump, metrics to METRICS_PATH as JSON
+    # Save model and metrics
+    joblib.dump(model, MODEL_PATH)
+    metrics = {
+        "model_type": "RandomForest",
+        "accuracy": round(accuracy, 4),
+        "confusion_matrix": cm.tolist(),
+        "classification_report": {
+            k: v for k, v in report.items()
+            if k in ["A", "D", "H", "macro avg", "weighted avg"]
+        },
+        "feature_names": FEATURE_NAMES,
+        "class_labels": ["Away Win", "Draw", "Home Win"],
+    }
+    with open(METRICS_PATH, "w") as f:
+        json.dump(metrics, f, indent=2)
+    print(f"Saved: {MODEL_PATH}, {METRICS_PATH}")
 
 
 if __name__ == "__main__":
