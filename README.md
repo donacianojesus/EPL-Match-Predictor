@@ -1,6 +1,6 @@
 # EPL Match Predictor
 
-A Premier League match outcome predictor. Uses historical match data and a Random Forest model to predict match results. Features a Flask API backend and React frontend.
+A Premier League match outcome predictor for my Senior Capstone Project. Uses historical match data and a Random Forest model to predict match results. Features a Flask API backend and React frontend.
 
 ## Key Features
 
