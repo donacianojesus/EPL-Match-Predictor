@@ -15,14 +15,14 @@ import sqlite3
 DB_PATH = os.path.join(os.path.dirname(__file__), "epl_data.db")
 
 
-def get_team_last_n_matches(conn, team, before_date, season, n=5):
-    """Query last n matches for a team (home or away) before a given date within the same season.
+def get_team_last_n_matches(conn, team, before_date, season=None, n=5):
+    """Query last n matches for a team (home or away) before a given date.
 
     Args:
         conn: SQLite connection.
         team: Team name (must match DB exactly).
         before_date: ISO date string (YYYY-MM-DD). Only matches before this date are included.
-        season: Season label (e.g. '2023-24').
+        season: Season label (e.g. '2023-24'). If None, matches from any season are included.
         n: Number of recent matches to retrieve.
 
     Returns:
@@ -30,18 +30,31 @@ def get_team_last_n_matches(conn, team, before_date, season, n=5):
     """
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
-    cur.execute(
-        """
-        SELECT date, home_team, away_team, home_goals, away_goals, result
-        FROM matches
-        WHERE (home_team = ? OR away_team = ?)
-          AND date < ?
-          AND season = ?
-        ORDER BY date DESC
-        LIMIT ?
-        """,
-        (team, team, before_date, season, n),
-    )
+    if season:
+        cur.execute(
+            """
+            SELECT date, home_team, away_team, home_goals, away_goals, result
+            FROM matches
+            WHERE (home_team = ? OR away_team = ?)
+              AND date < ?
+              AND season = ?
+            ORDER BY date DESC
+            LIMIT ?
+            """,
+            (team, team, before_date, season, n),
+        )
+    else:
+        cur.execute(
+            """
+            SELECT date, home_team, away_team, home_goals, away_goals, result
+            FROM matches
+            WHERE (home_team = ? OR away_team = ?)
+              AND date < ?
+            ORDER BY date DESC
+            LIMIT ?
+            """,
+            (team, team, before_date, n),
+        )
     return cur.fetchall()
 
 
@@ -92,7 +105,7 @@ def calculate_team_form(matches, team):
     }
 
 
-def calculate_features(conn, home_team, away_team, date, season):
+def calculate_features(conn, home_team, away_team, date, season=None):
     """Calculate the 6-feature vector for a given matchup.
 
     Args:
@@ -100,14 +113,14 @@ def calculate_features(conn, home_team, away_team, date, season):
         home_team: Home team name.
         away_team: Away team name.
         date: Match date (YYYY-MM-DD string).
-        season: Season label (e.g. '2023-24').
+        season: Season label (e.g. '2023-24'). If None, uses most recent matches across all seasons.
 
     Returns:
         Dict with 6 feature values, or None if either team has fewer than 5
-        prior matches in that season.
+        prior matches.
     """
-    home_matches = get_team_last_n_matches(conn, home_team, date, season, n=5)
-    away_matches = get_team_last_n_matches(conn, away_team, date, season, n=5)
+    home_matches = get_team_last_n_matches(conn, home_team, date, season=season, n=5)
+    away_matches = get_team_last_n_matches(conn, away_team, date, season=season, n=5)
 
     if len(home_matches) < 5 or len(away_matches) < 5:
         return None

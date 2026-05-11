@@ -1,5 +1,5 @@
 # Model Training Script
-# Trains Random Forest on 2021-23 EPL data, evaluates on 2023-24, saves model.pkl + metrics.json
+# Trains Random Forest on 2021-24 EPL data, evaluates on 2024-25, saves model.pkl + metrics.json
 
 import json
 import os
@@ -21,8 +21,8 @@ FEATURE_NAMES = [
     "home_form_goals_conceded", "away_form_goals_conceded",
 ]
 
-TRAIN_SEASONS = ["2021-22", "2022-23"]
-TEST_SEASON = "2023-24"
+TRAIN_SEASONS = ["2021-22", "2022-23", "2023-24"]
+TEST_SEASON = "2024-25"
 
 
 def build_dataset(conn):

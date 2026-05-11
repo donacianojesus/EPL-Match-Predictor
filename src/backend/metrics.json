@@ -1,0 +1,66 @@
+{
+  "model_type": "RandomForest",
+  "accuracy": 0.4455,
+  "confusion_matrix": [
+    [
+      44,
+      8,
+      62
+    ],
+    [
+      24,
+      8,
+      46
+    ],
+    [
+      33,
+      10,
+      95
+    ]
+  ],
+  "classification_report": {
+    "A": {
+      "precision": 0.43564356435643564,
+      "recall": 0.38596491228070173,
+      "f1-score": 0.40930232558139534,
+      "support": 114.0
+    },
+    "D": {
+      "precision": 0.3076923076923077,
+      "recall": 0.10256410256410256,
+      "f1-score": 0.15384615384615385,
+      "support": 78.0
+    },
+    "H": {
+      "precision": 0.46798029556650245,
+      "recall": 0.6884057971014492,
+      "f1-score": 0.5571847507331378,
+      "support": 138.0
+    },
+    "macro avg": {
+      "precision": 0.4037720558717486,
+      "recall": 0.3923116039820845,
+      "f1-score": 0.3734444100535623,
+      "support": 330.0
+    },
+    "weighted avg": {
+      "precision": 0.4189231731054879,
+      "recall": 0.44545454545454544,
+      "f1-score": 0.4107635173256124,
+      "support": 330.0
+    }
+  },
+  "feature_names": [
+    "home_form_points",
+    "away_form_points",
+    "home_form_goals_scored",
+    "away_form_goals_scored",
+    "home_form_goals_conceded",
+    "away_form_goals_conceded"
+  ],
+  "class_labels": [
+    "Away Win",
+    "Draw",
+    "Home Win"
+  ]
+}

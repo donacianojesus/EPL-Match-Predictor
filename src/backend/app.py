@@ -29,9 +29,9 @@ model = joblib.load(MODEL_PATH)
 with open(METRICS_PATH, "r") as f:
     metrics_data = json.load(f)
 
-# Reference point for form lookups: end of 2023-24 season (most recent data)
-PREDICT_SEASON = "2023-24"
-PREDICT_DATE = "2024-05-20"
+# Reference point for form lookups: end of 2024-25 season (most recent data)
+PREDICT_SEASON = "2024-25"
+PREDICT_DATE = "2025-05-20"
 
 app = Flask(__name__)
 CORS(app, origins=["http://localhost:3000"])
@@ -110,14 +110,13 @@ def predict():
         return jsonify({"error": f"Team not found in database: '{away_team}'"}), 400
 
     conn = get_db()
-    features = calculate_features(conn, home_team, away_team, PREDICT_DATE, PREDICT_SEASON)
+    features = calculate_features(conn, home_team, away_team, PREDICT_DATE)
     conn.close()
 
     if features is None:
         return jsonify({
             "error": (
-                f"Insufficient match history for '{home_team}' or '{away_team}' "
-                f"in the {PREDICT_SEASON} season."
+                f"Insufficient match history for '{home_team}' or '{away_team}'."
             )
         }), 400
 
@@ -162,4 +161,4 @@ def get_metrics():
 
 # Run the Flask app
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=5001)
